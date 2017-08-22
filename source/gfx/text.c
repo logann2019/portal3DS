@@ -80,9 +80,9 @@ void textDrawString(float x, float y, const char* s)
 	if(!s)return;
 	if((u32)s < textBaseAddr)return;
 
-	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG0, (u32)s-textBaseAddr);
+	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG1, (u32)s-textBaseAddr);
 
 	GPU_SetFloatUniform(GPU_GEOMETRY_SHADER, textUniformOffset, (u32*)(float[]){1.0f, 0.0f, x, y}, 1);
 
-	GPU_DrawArray(GPU_UNKPRIM, strlen(s));
+	GPU_DrawArray(GPU_TRIANGLES, strlen(s));
 }
