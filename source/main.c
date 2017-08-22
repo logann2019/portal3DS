@@ -104,12 +104,12 @@ void renderFrame(u32* outBuffer, u32* outDepthBuffer)
         GPU_DepthMap(-1.0f, 0.0f);
 	GPU_SetFaceCulling(GPU_CULL_FRONT_CCW);
 	GPU_SetStencilTest(false, GPU_ALWAYS, 0x00, 0xFF, 0x00);
-	GPU_SetStencilOp(GPU_KEEP, GPU_KEEP, GPU_KEEP);
+	GPU_SetStencilOp(GPU_STENCIL_KEEP, GPU_STENCIL_KEEP, GPU_STENCIL_KEEP);
 	GPU_SetBlendingColor(0,0,0,0);
 	GPU_SetDepthTestAndWriteMask(true, GPU_GREATER, GPU_WRITE_ALL);
 	
-	GPUCMD_AddMaskedWrite(GPUREG_0062, 0x1, 0); 
-	GPUCMD_AddWrite(GPUREG_0118, 0);
+	GPUCMD_AddMaskedWrite(GPUREG_003E, 0x1, 0); 
+	GPUCMD_AddWrite(GPUREG_0076, 0);
 	
 	GPU_SetAlphaBlending(GPU_BLEND_ADD, GPU_BLEND_ADD, GPU_SRC_ALPHA, GPU_ONE_MINUS_SRC_ALPHA, GPU_SRC_ALPHA, GPU_ONE_MINUS_SRC_ALPHA);
 	GPU_SetAlphaTest(false, GPU_ALWAYS, 0x00);
@@ -344,7 +344,7 @@ bool gameFrame()
 
 	gsDrawFrame();
 
-	gspWaitForEvent(GSPEVENT_VBlank0, true);
+	gspWaitForEvent(GSPGPU_EVENT_VBlank0, true);
 
 	return false;
 }
@@ -378,7 +378,7 @@ int main(int argc, char** argv)
 	gfxSet3D(true);
 
 	aptOpenSession();
-	APT_SetAppCpuTimeLimit(NULL, 30);
+	APT_SetAppCpuTimeLimit(30);
 	aptCloseSession();
 
 	//init fs
@@ -440,7 +440,7 @@ int main(int argc, char** argv)
 	}
 
 	aptOpenSession();
-	APT_SetAppCpuTimeLimit(NULL, 0);
+	APT_SetAppCpuTimeLimit(0);
 	aptCloseSession();
 
 	gfxExit();
