@@ -324,11 +324,11 @@ void md2RenderFrame(md2_model_t *mdl, int n1, int n2, float interp, float alpha,
 
 	textureBind(t, GPU_TEXUNIT0);
 
-	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG0, (u32)mdl->frames[n1].verts-md2BaseAddr);
-	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER1_CONFIG0, (u32)mdl->frames[n2].verts-md2BaseAddr);
-	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER2_CONFIG0, (u32)mdl->texcoords-md2BaseAddr);
+	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG1, (u32)mdl->frames[n1].verts-md2BaseAddr);
+	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER1_CONFIG1, (u32)mdl->frames[n2].verts-md2BaseAddr);
+	GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER2_CONFIG1, (u32)mdl->texcoords-md2BaseAddr);
 
-	GPU_DrawElements(GPU_UNKPRIM, (u32*)((u32)mdl->indices-md2BaseAddr), mdl->header.num_tris*3);
+	GPU_DrawElements(GPU_TRIANGLES, (u32*)((u32)mdl->indices-md2BaseAddr), mdl->header.num_tris*3);
 }
 
 void md2InstanceInit(md2_instance_t* mi, md2_model_t* mdl, texture_s* t)
