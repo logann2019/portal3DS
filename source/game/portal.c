@@ -178,7 +178,7 @@ void GPU_SetScissorTest_(GPU_SCISSORMODE mode, u32 x, u32 y, u32 w, u32 h)
 	param[0x1]=0x0000000F;
 	param[0x2]=0x00000002;
 	param[0x3]=0x00000002;
-	GPUCMD_AddIncrementalWrites(GPUREG_0112, param, 0x00000004);
+	GPUCMD_AddIncrementalWrites(GPUREG_COLORBUFFER_READ, param, 0x00000004);
 }
 
 void getPortalBoundingBox(portal_s* p, camera_s* c, vect3Di_s* topleft, vect3Di_s* bottomright, float* depth)
@@ -295,10 +295,10 @@ void drawPortals(portal_s* portals[], int n, renderSceneCallback_t callback, cam
 			0xFFFFFFFF);
 
 		GPU_SetFloatUniform(GPU_VERTEX_SHADER, colorUniformLoc, (u32*)(float[]){1.0f, 1.0f, 1.0f, 1.0f}, 1);
-		GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG0, (u32)portalVertexData-portalBaseAddr);
+		GPUCMD_AddWrite(GPUREG_ATTRIBBUFFER0_CONFIG1, (u32)portalVertexData-portalBaseAddr);
 
 		GPU_SetDepthTestAndWriteMask(true, GPU_GEQUAL, GPU_WRITE_COLOR);
-		GPU_SetStencilOp(GPU_KEEP, GPU_KEEP, GPU_XOR);
+		GPU_SetStencilOp(GPU_STENCIL_KEEP, GPU_STENCIL_KEEP, GPU_LOGICOP_XOR);
 
 		for(i=0; i<n; i++)
 		{
@@ -323,7 +323,7 @@ void drawPortals(portal_s* portals[], int n, renderSceneCallback_t callback, cam
 		GPUCMD_AddWrite(GPUREG_VSH_BOOLUNIFORM, 0x7FFF0000|portalProgram.vertexShader->boolUniforms);
 
 		GPU_SetDepthTestAndWriteMask(true, GPU_ALWAYS, GPU_WRITE_DEPTH);
-		GPU_SetStencilOp(GPU_KEEP, GPU_KEEP, GPU_KEEP);
+		GPU_SetStencilOp(GPU_STENCIL_KEEP, GPU_STENCIL_KEEP, GPU_STENCIL_KEEP);
 
 		for(i=0; i<n; i++)
 		{
@@ -347,7 +347,7 @@ void drawPortals(portal_s* portals[], int n, renderSceneCallback_t callback, cam
 	gsPopMatrix();
 
 	GPU_SetDepthTestAndWriteMask(true, GPU_GREATER, GPU_WRITE_ALL);
-	GPU_SetStencilOp(GPU_KEEP, GPU_KEEP, GPU_KEEP);
+	GPU_SetStencilOp(GPU_STENCIL_KEEP, GPU_STENCIL_KEEP, GPU_STENCIL_KEEP);
 
 	for(i=0; i<n; i++)
 	{
