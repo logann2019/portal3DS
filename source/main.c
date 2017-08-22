@@ -108,8 +108,8 @@ void renderFrame(u32* outBuffer, u32* outDepthBuffer)
 	GPU_SetBlendingColor(0,0,0,0);
 	GPU_SetDepthTestAndWriteMask(true, GPU_GREATER, GPU_WRITE_ALL);
 	
-	GPUCMD_AddMaskedWrite(GPUREG_003E, 0x1, 0); 
-	GPUCMD_AddWrite(GPUREG_0076, 0);
+	GPUCMD_AddMaskedWrite(GPUREG_EARLYDEPTH_TEST1, 0x1, 0); 
+	GPUCMD_AddWrite(GPUREG_EARLYDEPTH_TEST2, 0);
 	
 	GPU_SetAlphaBlending(GPU_BLEND_ADD, GPU_BLEND_ADD, GPU_SRC_ALPHA, GPU_ONE_MINUS_SRC_ALPHA, GPU_SRC_ALPHA, GPU_ONE_MINUS_SRC_ALPHA);
 	GPU_SetAlphaTest(false, GPU_ALWAYS, 0x00);
